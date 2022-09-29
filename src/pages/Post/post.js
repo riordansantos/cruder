@@ -1,8 +1,11 @@
 import React from "react";
 import Header from "../../components/Header/Header";
 import "./post.css";
+import {useForm} from 'react-hook-form';
 
 function Post() {
+
+    const { register, handleSubmit, formState: { erros}} = useForm();
   return (
     <div>
       <Header />

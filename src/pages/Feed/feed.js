@@ -15,8 +15,7 @@ function Feed() {
 
       <main>
         <div className="cards">
-          return(
-          <div className="card" key={key}>
+          <div className="card">
             <header>
               <h2>title</h2>
               <img src={More} />
@@ -40,7 +39,6 @@ function Feed() {
               </div>
             </div>
           </div>
-          )
         </div>
       </main>
     </div>
