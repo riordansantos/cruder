@@ -1,9 +1,11 @@
 import React from "react";
+import axios from "axios";
 import Header from "../../components/Header/Header";
 import "./post.css";
 import {useForm} from 'react-hook-form';
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import {useHistory} from "react-router-dom";
 
 const validationPost = yup.object().shape({
     title: yup.string().required("O campo é obrigatório").max(40, "O campo pode ter no máximo 40 caracteres"),
@@ -11,12 +13,19 @@ const validationPost = yup.object().shape({
     content: yup.string().required("O campo é obrigatório").max(500, "O campo pode ter no máximo 500 caracteres"),
 })
 function Post() {
-
+    let history = useHistory();
     const { register, handleSubmit, formState: { errors}} = useForm({
         resolver: yupResolver(validationPost)
     });
 
-    const addPost = data => console.log(data)
+    const addPost = data => axios.post("https://upload-my-api.herokuapp.com/post/create", data)
+    .then(() => {
+        console.log("deu certo")
+        history.push("/");
+    })
+    .catch(() => {
+        console.log("Ocorreu um erro")
+    })
   return (
     <div>
       <Header />
