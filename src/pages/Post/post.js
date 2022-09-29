@@ -2,10 +2,21 @@ import React from "react";
 import Header from "../../components/Header/Header";
 import "./post.css";
 import {useForm} from 'react-hook-form';
+import {yupResolver} from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
+const validationPost = yup.object().shape({
+    title: yup.string().required("O campo é obrigatório").max(40, "O campo pode ter no máximo 40 caracteres"),
+    description: yup.string().required("O campo é obrigatório").max(150, "O campo pode ter no máximo 150 caracteres"),
+    content: yup.string().required("O campo é obrigatório").max(500, "O campo pode ter no máximo 500 caracteres"),
+})
 function Post() {
 
-    const { register, handleSubmit, formState: { erros}} = useForm();
+    const { register, handleSubmit, formState: { errors}} = useForm({
+        resolver: yupResolver(validationPost)
+    });
+
+    const addPost = data => console.log(data)
   return (
     <div>
       <Header />
@@ -16,17 +27,25 @@ function Post() {
           <div className="line-post"></div>
 
           <div className="card-body-post">
-            <form>
+            <form onSubmit={handleSubmit(addPost)}>
               <div className="fields">
                 <label>Título</label>
+                <input type="text" name="title" {...register("title")}/>
+                <p className="error-message">{errors.title?.message}</p>
               </div>
 
               <div className="fields">
                 <label>Descrição</label>
+                <input type="text" name="description" {...register("description")}/>
+                <p className="error-message">{errors.description?.message}</p>
+
               </div>
 
               <div className="fields">
                 <label>Conteúdo</label>
+                <textarea type="text" name="content" {...register("content")}></textarea>
+                <p className="error-message">{errors.content?.message}</p>
+
               </div>
 
               <div className="btn-post">
